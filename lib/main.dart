@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_commerce/presentation/home/home_page.dart';
+import 'package:flutter_commerce/presentation/routes/routes.dart';
 import 'package:flutter_commerce/presentation/splash/splash_page.dart';
 import 'package:go_router/go_router.dart';
 
@@ -13,21 +14,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-      routerConfig: GoRouter(
-        routes: [
-          GoRoute(
-            path: '/splash',
-            name: 'splash',
-            builder: (context, state) => const SplashPage(),
-          ),
-          GoRoute(
-            path: '/home',
-            name: 'home',
-            builder: (context, state) => const HomePage(),
-          ),
-        ],
-        initialLocation: '/splash',
-      ),
+      routerConfig: router,
     );
   }
 }
