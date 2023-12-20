@@ -7,6 +7,7 @@ import '../category/category_page.dart';
 import '../home/home_page.dart';
 import '../search/search_page.dart';
 import '../user/user_page.dart';
+import 'component/top_app_bar/top_app_bar.dart';
 import 'cubit/bottom_nav_cubit.dart';
 
 class MainScreen extends StatelessWidget {
@@ -27,58 +28,7 @@ class MainScreenView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        //appBar 높이 설정
-        preferredSize: Size.fromHeight(
-          44.0,
-        ),
-        child: Container(
-          //Container를 활용하여 AppBar 영역 패딩 적용
-          padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 8),
-          color: Theme.of(context).colorScheme.primary,
-          child: AppBar(
-            leading: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: SvgPicture.asset(
-                AppIcons.mainLogo,
-              ),
-            ),
-            title: Text(
-              'tapBar',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            actions: [
-              Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: SvgPicture.asset(
-                  AppIcons.location,
-                  colorFilter: ColorFilter.mode(
-                    Theme.of(context).colorScheme.background,
-                    BlendMode.srcIn,
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: SvgPicture.asset(
-                  AppIcons.cart,
-                  colorFilter: ColorFilter.mode(
-                    Theme.of(context).colorScheme.background,
-                    BlendMode.srcIn,
-                  ),
-                ),
-              )
-            ],
-            backgroundColor: Colors.transparent,
-            centerTitle: true,
-            leadingWidth: 86,
-          ),
-        ),
-      ),
+      appBar: const TopAppBar(),
       body: BlocBuilder<BottomNavCubit, BottomNav>(
         builder: (_, state) {
           switch (state) {
@@ -99,10 +49,13 @@ class MainScreenView extends StatelessWidget {
             items: List.generate(
               BottomNav.values.length,
               (index) => BottomNavigationBarItem(
-                icon: SvgPicture.asset(BottomNav.values[index].icon),
+                icon: SvgPicture.asset(
+                  BottomNav.values[index].icon,
+                ),
                 label: BottomNav.values[index].toName,
-                activeIcon:
-                    SvgPicture.asset(BottomNav.values[index].activeIcon),
+                activeIcon: SvgPicture.asset(
+                  BottomNav.values[index].activeIcon,
+                ),
               ),
             ),
             onTap: (index) => context.read<BottomNavCubit>().changeIndex(index),
