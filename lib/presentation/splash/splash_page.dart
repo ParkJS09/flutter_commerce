@@ -23,7 +23,7 @@ class _SplashPageState extends State<SplashPage> {
         seconds: 2,
       ),
       () => context.go(
-        RoutePath.home,
+        RoutePath.main,
       ),
     );
   }
