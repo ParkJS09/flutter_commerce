@@ -1,10 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../core/theme/constant/app_icons.dart';
+import '../category/category_page.dart';
+import '../home/home_page.dart';
+import '../search/search_page.dart';
+import '../user/user_page.dart';
+import 'cubit/bottom_nav_cubit.dart';
 
 class MainScreen extends StatelessWidget {
   const MainScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (_) => BottomNavCubit(),
+      child: const MainScreenView(),
+    );
+  }
+}
+
+class MainScreenView extends StatelessWidget {
+  const MainScreenView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -61,33 +79,62 @@ class MainScreen extends StatelessWidget {
           ),
         ),
       ),
-      body: Center(
-        child: Text('main_sreen'),
+      body: BlocBuilder<BottomNavCubit, BottomNav>(
+        builder: (_, state) {
+          switch (state) {
+            case BottomNav.home:
+              return const HomePage();
+            case BottomNav.category:
+              return const CategoryPage();
+            case BottomNav.search:
+              return const SearchPage();
+            case BottomNav.user:
+              return const UserPage();
+          }
+        },
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: [
-          BottomNavigationBarItem(
-            icon: SvgPicture.asset(AppIcons.navHome),
-            label: 'home',
-          ),
-          BottomNavigationBarItem(
-            icon: SvgPicture.asset(AppIcons.navCategory),
-            label: 'category',
-          ),
-          BottomNavigationBarItem(
-            icon: SvgPicture.asset(AppIcons.navSearch),
-            label: 'search',
-          ),
-          BottomNavigationBarItem(
-            icon: SvgPicture.asset(AppIcons.navUser),
-            label: 'user',
-          ),
-        ],
-        //선택된 아이템 강조효과 제거
-        type: BottomNavigationBarType.fixed,
-        //BNB Label 미노출
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
+      bottomNavigationBar: BlocBuilder<BottomNavCubit, BottomNav>(
+        builder: (_, state) {
+          return BottomNavigationBar(
+            items: [
+              BottomNavigationBarItem(
+                icon: SvgPicture.asset(
+                  AppIcons.navHome,
+                ),
+                label: 'home',
+                activeIcon: SvgPicture.asset(
+                  AppIcons.navHomeOn,
+                ),
+              ),
+              BottomNavigationBarItem(
+                icon: SvgPicture.asset(AppIcons.navCategory),
+                label: 'category',
+                activeIcon: SvgPicture.asset(
+                  AppIcons.navCategoryOn,
+                ),
+              ),
+              BottomNavigationBarItem(
+                icon: SvgPicture.asset(AppIcons.navSearch),
+                label: 'search',
+                activeIcon: SvgPicture.asset(
+                  AppIcons.navSearchOn,
+                ),
+              ),
+              BottomNavigationBarItem(
+                icon: SvgPicture.asset(AppIcons.navUser),
+                label: 'user',
+                activeIcon: SvgPicture.asset(
+                  AppIcons.navUserOn,
+                ),
+              ),
+            ],
+            onTap: (index) => context.read<BottomNavCubit>().changeIndex(index),
+            currentIndex: state.index,
+            type: BottomNavigationBarType.fixed,
+            showSelectedLabels: false,
+            showUnselectedLabels: false,
+          );
+        },
       ),
     );
   }
